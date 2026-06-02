@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 260px;
+      margin: 0;
+      padding: 16px;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+    }
+    h1 {
+      font-size: 14px;
+      margin: 0 0 12px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    button:disabled { background: #9ca3af; cursor: default; }
+    #status {
+      margin-top: 12px;
+      min-height: 18px;
+      line-height: 1.5;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <h1>タブを保存して閉じる</h1>
+  <label>
+    <input type="checkbox" id="useFolder" checked>
+    日付フォルダにまとめる
+  </label>
+  <button id="save">すべて保存して閉じる</button>
+  <div id="status"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
