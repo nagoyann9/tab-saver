@@ -1,6 +1,5 @@
 const btn = document.getElementById("save");
 const status = document.getElementById("status");
-const useFolder = document.getElementById("useFolder");
 
 const pad = (n) => String(n).padStart(2, "0");
 
@@ -31,22 +30,28 @@ btn.addEventListener("click", async () => {
 
     const barId = await getBookmarksBarId();
 
-    // 保存先（フォルダ or ブックマークバー直下）を決める
-    let parentId = barId;
-    let label = "ブックマークバー";
+    // 同日付けの既存フォルダを探し、なければ新規作成
+    const d = new Date();
+    const todayPrefix =
+      `${pad(d.getFullYear() % 100)}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+    const wday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
 
-    if (useFolder.checked) {
-      const d = new Date();
-      const wday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
-      const folderName =
-        `${pad(d.getFullYear() % 100)}${pad(d.getMonth() + 1)}${pad(d.getDate())}` +
-        `${wday}${pad(d.getHours())}${pad(d.getMinutes())}`;
+    const barChildren = await chrome.bookmarks.getChildren(barId);
+    const existingFolder = barChildren.find(
+      (c) => !c.url && c.title.startsWith(todayPrefix)
+    );
+
+    let parentId, label;
+    if (existingFolder) {
+      parentId = existingFolder.id;
+      label = `「${existingFolder.title}」`;
+    } else {
       const folder = await chrome.bookmarks.create({
         parentId: barId,
-        title: folderName,
+        title: `${todayPrefix}${wday}`,
       });
       parentId = folder.id;
-      label = `「${folderName}」`;
+      label = `「${folder.title}」`;
     }
 
     // 各タブをブックマークに登録

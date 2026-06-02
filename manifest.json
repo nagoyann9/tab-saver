@@ -5,7 +5,9 @@
   "description": "開いているタブをすべてブックマークバーに保存してから閉じます。",
   "permissions": ["tabs", "bookmarks"],
   "action": {
-    "default_popup": "popup.html",
     "default_title": "タブを保存して閉じる"
+  },
+  "background": {
+    "service_worker": "background.js"
   }
 }
